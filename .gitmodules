@@ -1,0 +1,3 @@
+[submodule "deep_ckt"]
+	path = deep_ckt
+	url = https://github.com/kouroshHakha/bag_deep_ckt.git
