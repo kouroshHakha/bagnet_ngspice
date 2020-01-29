@@ -1,0 +1,4 @@
+.idea
+*.out
+*__pycache__*
+outputs

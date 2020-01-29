@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+export WORKDIR=$(pwd)
+
+export PYTHONPATH="${WORKDIR}"
+export PYTHONPATH="${PYTHONPATH}:${WORKDIR}/deep_ckt/blackbox_eval_engine/src"
+export PYTHONPATH="${PYTHONPATH}:${WORKDIR}/deep_ckt/bagnet/src"
+export PYTHONPATH="${PYTHONPATH}:${WORKDIR}/bb_envs/src"
+

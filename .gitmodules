@@ -1,3 +1,9 @@
 [submodule "deep_ckt"]
 	path = deep_ckt
 	url = https://github.com/kouroshHakha/bag_deep_ckt.git
+[submodule "utils"]
+	path = utils
+	url = https://github.com/kouroshHakha/MLutils.git
+[submodule "bb_envs"]
+	path = bb_envs
+	url = https://github.com/kouroshHakha/bb_envs.git
