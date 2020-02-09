@@ -1,7 +1,7 @@
-outputs: outputs/log/cs_amp
+outputs: outputs/log/two_stage
 
 
-bb_env: bb_envs/src/ngspice/envs/cs_amp.yaml
+bb_env: bb_envs/src/ngspice/envs/two_stage_opamp.yaml
 
 agent_cls: bagnet.agent.oracle.OracleAgent
 agent_params:
