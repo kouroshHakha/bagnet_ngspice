@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
 source ./.pypath
-export PYTHONHASHSEED=0
+source ./.env
+
 exec python $@
