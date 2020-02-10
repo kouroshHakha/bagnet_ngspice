@@ -1,0 +1,17 @@
+outputs: outputs/log/evo/cs_amp
+
+bb_env: bb_envs/src/ngspice/envs/cs_amp.yaml
+
+agent_cls: bagnet.agent.ea.EvoAgent
+agent_params:
+  seed: 10
+  n_init_samples: 100
+  max_n_steps: 50
+  k: 100
+  n_new_samples: 5
+  ref_dsn_idx: 20
+
+ea_cls: bagnet.ea.custom.CustomEA
+ea_params:
+  cxpb: 0.6
+  mutpb: 0.4

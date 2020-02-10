@@ -1,0 +1,17 @@
+outputs: outputs/log/evo/two_stage
+
+bb_env: bb_envs/src/ngspice/envs/two_stage_opamp.yaml
+
+agent_cls: bagnet.agent.ea.EvoAgent
+agent_params:
+  seed: 10
+  n_init_samples: 100
+  max_n_steps: 1000
+  k: 100
+  n_new_samples: 5
+  ref_dsn_idx: 20
+
+ea_cls: bagnet.ea.custom.CustomEA
+ea_params:
+  cxpb: 0.6
+  mutpb: 0.4
