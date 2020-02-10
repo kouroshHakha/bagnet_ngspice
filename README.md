@@ -27,7 +27,7 @@ Contains the submodules for black-box env framework and the algorithms used for 
 
 # running experiements readily
 
-`command.sh` contains some commands that can reproduce the results of ICCAD paper for the two stage opamp optimization problem. You can comment/un-comment the sections that you deem necessary.
+`command.sh` contains the commands that reproduce the results of ICCAD paper for the two stage opamp optimization problem. You can comment/un-comment the sections that you deem necessary.
 
 ```
 ./commands.sh
