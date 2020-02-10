@@ -1,6 +1,6 @@
 ## BagNet release for NGSPICE
 This repo contains the demo code for demonstraing the algorithm of BagNet in ngspice environment.
-BagNet results have been demonstrated in [ICCAD 2019](https://ieeexplore.ieee.org/document/8942062) and [DAC 2019(https://ieeexplore.ieee.org/document/8807032).
+BagNet results have been demonstrated in [ICCAD 2019](https://ieeexplore.ieee.org/document/8942062) and [DAC 2019](https://ieeexplore.ieee.org/document/8807032).
 
 BagNet demo on BAG (Berkeley Analag Generator) with post layout simulations is comming soon.
 
