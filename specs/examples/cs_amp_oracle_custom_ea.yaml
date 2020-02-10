@@ -1,6 +1,5 @@
 outputs: outputs/log/cs_amp
 
-
 bb_env: bb_envs/src/ngspice/envs/cs_amp.yaml
 
 agent_cls: bagnet.agent.oracle.OracleAgent
