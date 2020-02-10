@@ -22,8 +22,8 @@ This repo contains two submodule:
 
 * ([bb_envs](https://github.com/kouroshHakha/bb_envs.git)):
 Contains example implementations of black-box environments used for optimization. For more info go to the link and read the documentation.
-* ([deep_ckt](https://github.com/kouroshHakha/bag_deep_ckt.git)):
-Contains the submodules for black-box env framework and the algorithms used for circuit optimization.
+* ([deep_ckt](https://github.com/kouroshHakha/bag_deep_ckt/tree/bagnet_ngspice_release)):
+Contains the submodules for black-box env framework and the algorithms used for circuit optimization. Look into the submodule for more details.
 
 # running experiements readily
 
