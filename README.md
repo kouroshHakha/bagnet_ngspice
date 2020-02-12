@@ -25,7 +25,7 @@ Contains example implementations of black-box environments used for optimization
 * ([deep_ckt](https://github.com/kouroshHakha/bag_deep_ckt/tree/bagnet_ngspice_release)):
 Contains the submodules for black-box env framework and the algorithms used for circuit optimization. Look into the submodule for more details.
 
-# running experiements readily
+# running prepared experiements
 
 `command.sh` contains the commands that reproduce the results of ICCAD paper for the two stage opamp optimization problem. You can comment/un-comment the sections that you deem necessary.
 
