@@ -1,4 +1,4 @@
-outputs: outputs/log/evo/two_stage
+outputs: outputs/log/two_stage/evo
 
 bb_env: bb_envs/src/ngspice/envs/two_stage_opamp.yaml
 
