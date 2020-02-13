@@ -4,7 +4,7 @@ bb_env: bb_envs/src/ngspice/envs/two_stage_opamp.yaml
 
 agent_cls: bagnet.agent.bagnet.BagNetAgent
 agent_params:
-  seed: 20
+  seed: 10
   n_init_samples: 100
   max_n_steps: 50
   k: 100
