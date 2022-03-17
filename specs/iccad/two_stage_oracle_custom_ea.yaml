@@ -1,17 +1,18 @@
 outputs: outputs/log/two_stage/oracle
 
 
-bb_env: bb_envs/src/ngspice/envs/two_stage_opamp.yaml
+bb_env: bb_envs/src/ngspice/envs/two_stage_opamp_w_rz.yaml
 
 agent_cls: bagnet.agent.oracle.OracleAgent
 agent_params:
-  seed: 10
+  seed: 20
   n_init_samples: 100
   max_n_steps: 50
   k: 100
   max_iter: 20000
   n_new_samples: 5
   ref_dsn_idx: 20
+  save_queries: True
 
 ea_cls: bagnet.ea.custom.CustomEA
 ea_params:
