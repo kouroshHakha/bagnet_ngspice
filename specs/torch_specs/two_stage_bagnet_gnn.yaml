@@ -1,0 +1,41 @@
+outputs: outputs/log/two_stage/bagnet_torch_gnn_2
+
+bb_env: bb_envs/src/ngspice/envs/two_stage_opamp_w_rz.yaml
+
+agent_cls: bagnet.agent.bagnet.BagNetAgent
+agent_params:
+  n_init_samples: 100
+  max_n_steps: 1000
+  k: 100
+  max_iter: 20000
+  n_new_samples: 5
+  ref_dsn_idx: 20
+  valid_frac: 0.2
+  batch_size: 64
+  display_step: 100
+  ckpt_step: 1000
+  ngrad_update_per_iter: 100
+  eps_greedy: 0.001
+
+  model_cls: bagnet.model.simple.SimpleModel
+  model_params:
+    feat_hdim: 20
+    feat_nlayer: 2
+    feat_out_dim: 256
+    comp_hdim: 20
+    comp_nlayer: 1
+    learning_rate: !!float 0.001
+    keep_prob: !!float 0.8
+    gnn_ckpt: 'gnn_ckpt/33c8jvqf/checkpoints/last.ckpt'
+    rand_init: False
+
+
+ea_cls: bagnet.ea.custom.CustomEA
+ea_params:
+  cxpb: 0.6
+  mutpb: 0.4
+
+# ea_cls: bagnet.ea.cem.CEM
+# ea_params:
+#   n: 5
+#   dist_type: 'gaussian'

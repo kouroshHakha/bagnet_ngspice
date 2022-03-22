@@ -49,10 +49,14 @@ def get_plot_content(log_contents, xaxis='n_iter', top_k=1):
         
         cum_design_list = []
         yarr, xarr = [], []
+        solution_found = False
         for step_cnt, dsn_list in enumerate(design_list):
             cum_design_list += dsn_list
             db_sorted = sorted(cum_design_list, key=lambda x: x['cost'])
             avg_cost = np.mean([x['cost'] for x in db_sorted[:top_k]])
+            if db_sorted[0]['cost'] == 0 and not solution_found:
+                print(f'solution found at step {step_cnt}')
+                solution_found = True
 
             yarr.append(avg_cost)
 
@@ -73,7 +77,7 @@ def get_plot_content(log_contents, xaxis='n_iter', top_k=1):
     ys, x = group(ys, xs)
 
     mean_y = np.mean(ys, 0)
-    margin = np.std(ys, 0)
+    margin = np.std(ys, 0) / np.sqrt(len(ys))
     plot_content = dict(
         x=x,
         y=mean_y,
