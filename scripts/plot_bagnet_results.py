@@ -125,8 +125,11 @@ def main(pargs):
     if pargs.log_x:
         ax.set_xscale('log')
 
+    ax.set_xlabel(f'{pargs.x}')
+    ax.set_ylabel(f'Average top {pargs.top_k} cost')
+
     ax.legend()
-    plt.savefig(pargs.output_file)
+    plt.savefig(pargs.output_file, dpi=500)
 
 if __name__ == '__main__':
     main(_parse_args())
