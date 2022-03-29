@@ -6,6 +6,7 @@ import math
 from cgl.models.gnn import DeepGENNet, Node2GraphEmb
 
 # TODO: test
+
 class SymLinear(nn.Module):
 
     def __init__(self, in_features, out_features, bias=True,
@@ -51,7 +52,27 @@ class SymLinear(nn.Module):
             self.in_features, self.out_features, self.bias is not None
         )
 
+class MLPBinaryClassifier(nn.Module):
+    def __init__(self, feature_dim, n_layers, hidden_dim, drop_out=0.):
+        super().__init__()
 
+        assert hidden_dim % 2 == 0
+
+        dims = [feature_dim] + [hidden_dim] * n_layers
+
+        nets = []
+        for in_dim, out_dim in zip(dims[:-1], dims[1:]):
+            nets.append(nn.Linear(in_dim, out_dim, bias=True))
+            nets.append(nn.ReLU())
+            nets.append(nn.Dropout(drop_out))
+        nets.append(nn.Linear(hidden_dim, 2, bias=True))
+        self.net = nn.Sequential(*nets)
+
+    def forward(self, x):
+        nn_out = self.net(x)
+        output = {'prob': nn_out.softmax(-1), 'logit': nn_out}
+        return output
+        
 class ComparisonHead(nn.Module):
 
     def __init__(self, feature_dim, n_layers, hidden_dim, drop_out=0.):
@@ -173,7 +194,7 @@ class BagNetComparisonModel(nn.Module):
         loss = nn.CrossEntropyLoss()(input=output_logits, target=target_labels)
         return loss
 
-    def forward(self, input_dict):
+    def forward(self, input_dict, compute_loss=True):
 
         input_a = input_dict['input_a']
         input_b = input_dict['input_b']
@@ -190,9 +211,73 @@ class BagNetComparisonModel(nn.Module):
             outputs[key] = self.comparison_heads[key](features_a, features_b)
 
         losses = {}
-        for key in input_dict:
-            if key not in ('input_a', 'input_b'):
-                losses[key] = self.compute_loss(input_dict[key], outputs[key])
+        if compute_loss:
+            for key in input_dict:
+                if key not in ('input_a', 'input_b'):
+                    losses[key] = self.compute_loss(input_dict[key], outputs[key])
+
+        return dict(outputs=outputs, losses=losses)
+
+
+
+class BagNetComparisonModel_v2(nn.Module):
+
+    def __init__(
+        self, 
+        comparison_kwrds,
+        feature_exractor_config,
+        comparison_model_config,
+        meet_spec_config,
+        is_gnn=False,
+    ):
+        super().__init__()
+
+        self.is_gnn = is_gnn
+        if is_gnn:
+            self.feature_extractor = FeatureExtractorGNN(**feature_exractor_config)
+        else:
+            self.feature_extractor = FeatureExtractorLinear(**feature_exractor_config)
+
+        feature_dim = self.feature_extractor.out_features
+
+        self.comparison_heads = nn.ModuleDict()
+        for key in comparison_kwrds:
+            self.comparison_heads[key] = ComparisonHead(feature_dim, **comparison_model_config)
+
+        self.meet_spec_nn = nn.ModuleDict()
+        for key in comparison_kwrds:
+            self.meet_spec_nn[key] = MLPBinaryClassifier(feature_dim, **meet_spec_config)
+
+
+    def compute_loss(self, target_labels, nn_output):
+        output_logits = nn_output['logit']
+        loss = nn.CrossEntropyLoss()(input=output_logits, target=target_labels)
+        return loss
+
+    def forward(self, input_dict, compute_loss=True):
+        input_a = input_dict['input_a']
+        input_b = input_dict['input_b']
+
+        features_a = self.feature_extractor(input_a)['feature']
+        features_b = self.feature_extractor(input_b)['feature']
+
+        outputs = {'a_better_than_b': {}, 'a_meets_specs': {}, 'b_meets_specs': {}}
+        for key in self.comparison_heads:
+            outputs['a_better_than_b'][key] = self.comparison_heads[key](features_a, features_b)
+
+        for key in self.meet_spec_nn:
+            outputs['a_meets_specs'][key] = self.meet_spec_nn[key](features_a)
+            outputs['b_meets_specs'][key] = self.meet_spec_nn[key](features_b)
+
+        if compute_loss:
+            losses = {'comp': {}, 'meet_spec': {}, }
+            for key in self.comparison_heads:
+                # if key not in ('input_a', 'input_b'):
+                    losses['comp'][key] = nn.CrossEntropyLoss()(input=outputs['a_better_than_b'][key]['logit'], target=input_dict['a_better_than_b'][key])
+                    losses['meet_spec'][key] = 0.5 * (nn.CrossEntropyLoss()(input=outputs['a_meets_specs'][key]['logit'], target=input_dict['a_meets_specs'][key]) + \
+                        nn.CrossEntropyLoss()(input=outputs['b_meets_specs'][key]['logit'], target=input_dict['b_meets_specs'][key]))
+        else:
+            losses = {}
 
         return dict(outputs=outputs, losses=losses)
 
